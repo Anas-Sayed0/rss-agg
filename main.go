@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/Anas-Sayed0/rss-agg/internal/database"
 	"github.com/go-chi/chi"
@@ -19,6 +20,11 @@ type apiConfig struct {
 }
 
 func main() {
+	// feed, err:= urlToFeed("https://wagslane.dev/index.xml")
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// log.Println(feed)
 
 	godotenv.Load(".env")
 
@@ -41,6 +47,8 @@ func main() {
 	apiCfg := apiConfig{
         DB: queries,
 	}
+
+	go startScraping(queries, 10, time.Minute)
 
 	router := chi.NewRouter()
 
